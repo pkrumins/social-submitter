@@ -51,7 +51,14 @@
       font-size: 1.2em;
     }
 
-    label {
+    #body .title {
+      font-size: 1.4em;
+      font-weight: bold;
+      margin-bottom: 10px;
+      border-bottom: 1px solid black;
+    }
+
+    #body #form #submitform label {
       display: block;
       width: 70px;
       float: left;
@@ -60,22 +67,15 @@
       font-weight: bold;
     }
 
-    input[type=text] {
+    #body #form #submitform input[type=text] {
       border: 1px solid #c9c9c9;
     }
 
-    input[type=text]:focus {
+    #body #form #submitform input[type=text]:focus {
       border: 1px solid black;
     }
 
-    #body #site {
-      font-size: 1.4em;
-      font-weight: bold;
-      margin-bottom: 10px;
-      border-bottom: 1px solid black;
-    }
-
-    #body #submit {
+    #body #form #submitform #submit {
       margin-left: 70px;
     }
   </style>
@@ -83,7 +83,7 @@
 <body>
   <div id="wrapper">
     <div id="plug">
-      <p><a href="http://github.com/pkrumins">Social Submitter</a> by <a href="http://www.catonmat.net">Peteris Krumins</a></p>
+      <p><a href="http://github.com/pkrumins/social-submitter">Social Submitter</a> by <a href="http://www.catonmat.net">Peteris Krumins</a></p>
       <p>One day I got tired of submitting my articles to all these sites and decided to write a program that does it for me.</p>
     </div>
     <div id="menu">
@@ -100,33 +100,41 @@
       <a href="#" class="Facebook">Facebook</a>
     </div>
     <div id="body">
-      <div id="site">Reddit</div>
-      <form id="form">
-        <input type="hidden" name="site" value="reddit">
-        <div class="row">
-          <label for="title">Username:</label> <input type="text" name="username" size="20">
-        </div>
-        <div class="row">
-          <label for="title">Password:</label> <input type="text" name="password" size="20">
-        </div>
-        <div class="row">
-          <label for="title">Title:</label> <input type="text" name="title" size="60">
-        </div>
-        <div class="row">
-          <label for="title">URL:</label> <input type="text" name="url" size="60">
-        </div>
-        <div id="submit">
-          <input type="submit" value="Submit to Reddit">
-        </div>
-      </form>
+      <div class="title" id="site">Reddit</div>
+      <div id="form">
+        <form id="submitform">
+          <input type="hidden" name="site" value="reddit">
+          <div class="row">
+            <label for="title">Username:</label> <input type="text" name="username" size="20">
+          </div>
+          <div class="row">
+            <label for="title">Password:</label> <input type="text" name="password" size="20">
+          </div>
+          <div id="restofform">
+
+          </div>
+          <div id="submit">
+            <input type="submit" value="Submit to Reddit">
+          </div>
+        </form>
+      </div>
+      <div id="log">
+        <div class="title">Log</div>
+        <div id="reallog">
+          <ul>
+            <li>Nothing yet</li>
+          </ul>
+        </div> 
+      </div>
     </div>
   </div>
 
   <script>
-    $('#menu a').click(function () {
-      $('#form :hidden[name=site]').val($(this).attr('class'));
-      $('#site').text($(this).text());
-    });
+    function updateForm (siteName) {
+      $.get('/form_' + siteName, function (form) {
+        $('#restofform').html(form);
+      });
+    }
 
     function formToJson(form) {
       var obj = {};
@@ -137,9 +145,19 @@
       });
       return obj;
     }
+
+    $('#menu a').click(function () {
+      var site = $(this).text();
+      var shortName = $(this).attr('class');
+      $('#site').text(site);
+      $('#form :hidden[name=site]').val(shortName);
+      updateForm(shortName);
+    });
   </script>
 
   <script>
+    updateForm('reddit');
+
     DNode().connect(
       function (remote) {
         $('#form').submit(function () {
