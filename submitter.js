@@ -21,8 +21,20 @@ app.get('/form_:name', function (req, res) {
     (fileRouter(filename))(req, res);
 });
 
+var plugins = {};
+fs.readdirSync(__dirname + '/plugins').forEach(function (plugin) {
+    if (/\.js$/.test(plugin)) {
+        var p = plugin.replace('.js', '');
+        plugins[p] = require(__dirname + '/plugins/' + plugin);
+    }
+});
+
 DNode(function (client) {
     this.submit = function (data) {
+        if (!plugins[data.site]) {
+            client.error('No plugin for site ' + data.site + '.');
+            return;
+        }
         if (!data.username.length) {
             client.error('Username is empty.');
             return;
