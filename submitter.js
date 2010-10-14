@@ -10,13 +10,14 @@ app.get('/', function (req, res) {
 app.get('/dnode.js', require('dnode/web').route());
 
 DNode(function (client) {
-    this.submit = function (site, data) {
-        console.log(site);
+    this.submit = function (data) {
         console.dir(data);
     }
 }).listen(app, {
     transports : 'websocket xhr-multipart xhr-polling htmlfile'.split(/\s+/),
-}).listen(6666)
+}).listen(4001);
 
-console.log('Submitter running on 0.0.0.0:6666');
+app.listen(4000);
+
+console.log('Submitter running on 0.0.0.0:4000');
 
