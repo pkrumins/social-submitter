@@ -129,5 +129,15 @@
       site = $(this).attr('class');
     });
   </script>
+
+  <script>
+    DNode().connect(
+      function (remote) {
+        $('#submit input').click(function () {
+          remote.submit(site, {foo: 5});
+        });
+      }
+    });
+  </script>
 </body>
 </html>
