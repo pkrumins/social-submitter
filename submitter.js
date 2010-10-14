@@ -8,6 +8,10 @@ app.get('/', function (req, res) {
     res.send(html, { 'Content-Type': 'text/html' });
 });
 app.get('/dnode.js', require('dnode/web').route());
+app.get('/form_:name', function (req, res) {
+    var html = fs.readFileSync(__dirname + '/html/form_' + req.params.name + '.html');
+    res.send(html, { 'Content-Type': 'text/html' });
+});
 
 DNode(function (client) {
     this.submit = function (data) {
