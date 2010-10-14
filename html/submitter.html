@@ -58,6 +58,13 @@
       border-bottom: 1px solid black;
     }
 
+    #body #error {
+      margin-bottom: 10px;
+      border: 2px solid #FBC2C4;
+      color: #8a1f11;
+      padding: 5px;
+    }
+
     #body #form #submitform label {
       display: block;
       width: 70px;
@@ -101,6 +108,7 @@
     </div>
     <div id="body">
       <div class="title" id="site">Reddit</div>
+      <div id="error"></div>
       <div id="form">
         <form id="submitform">
           <input type="hidden" name="site" value="reddit">
@@ -157,8 +165,13 @@
 
   <script>
     updateForm('reddit');
+    $('#error').hide();
 
-    DNode().connect(
+    DNode({
+      error : function (msg) {
+        $('#error').text(msg).slideDown()
+      } 
+    }).connect(
       function (remote) {
         $('#form').submit(function () {
           remote.submit(
