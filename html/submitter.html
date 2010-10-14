@@ -101,7 +101,8 @@
     </div>
     <div id="body">
       <div id="site">Reddit</div>
-      <form>
+      <form id="form">
+        <input type="hidden" name="site" value="reddit">
         <div class="row">
           <label for="title">Username:</label> <input type="text" name="username" size="20">
         </div>
@@ -122,21 +123,33 @@
   </div>
 
   <script>
-    var site = 'reddit';
     $('#menu a').click(function () {
+      $('#form :hidden[name=site]').val($(this).attr('class'));
       $('#site').text($(this).text());
-      site = $(this).attr('class');
     });
+
+    function formToJson(form) {
+      var obj = {};
+      form.each(function (_, el) {
+        if (el.name) {
+          obj[el.name] = el.value;
+        }
+      });
+      return obj;
+    }
   </script>
 
   <script>
     DNode().connect(
       function (remote) {
-        $('#submit input').click(function () {
-          remote.submit(site, {foo: 5});
+        $('#form').submit(function () {
+          remote.submit(
+            formToJson($('#form :input'))
+          );
+          return false;
         });
       }
-    });
+    );
   </script>
 </body>
 </html>
