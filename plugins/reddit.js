@@ -28,6 +28,7 @@ module.exports = function (client, data) {
                 r : data.subreddit,
                 renderstyle : 'html'
             }
-        );
+        )
+        .end();
 }
 
