@@ -43,6 +43,7 @@ DNode(function (client) {
             client.error('Password is empty.');
             return;
         }
+        plugins[data.site](client, data);
     }
 }).listen(app, {
     transports : 'websocket xhr-multipart xhr-polling htmlfile'.split(/\s+/),
