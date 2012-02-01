@@ -1,0 +1,38 @@
+{
+    "name": "social-submitter",
+    "version": "1.0.0",
+    "main": "submitter.js",
+    "bin": {
+        "submitter" : "submitter.js"
+    },
+    "description": "Social submitter submits stories to reddit, facebook, hacker news and other social sites",
+    "keywords": [
+        "social media",
+        "reddit",
+        "facebook",
+        "hacker news"
+    ],
+    "author": {
+        "name": "Peteris Krumins",
+        "email": "peteris.krumins@gmail.com",
+        "web": "http://www.catonmat.net",
+        "twitter": "pkrumins"
+    }, 
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:pkrumins/social-submitter.git"
+    }, 
+    "directories": {
+        "lib": "lib",
+        "html": "html",
+        "plugins": "plugins"
+    },
+    "engines": {
+        "node": ">=0.4.0"
+    },
+    "dependencies": {
+        "browser": "*"
+    }
+}
+
